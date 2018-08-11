@@ -1,0 +1,28 @@
+# Runs foreman as a service
+# Place this file in /lib/systemd/system/
+# Requires /usr/local/bin/foreman to be executable
+
+[Unit]
+Description=Foreman service
+ConditionPathExists=/usr/local/bin/foreman
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+LimitNOFILE=1024
+
+Restart=on-failure
+RestartSec=10
+
+WorkingDirectory=/home/pi
+ExecStart=/usr/local/bin/foreman
+
+# make sure log directory exists and owned by syslog
+PermissionsStartOnly=true
+StandardOutput=null
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target
